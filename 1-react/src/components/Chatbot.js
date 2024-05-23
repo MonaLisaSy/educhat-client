@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaTelegramPlane } from "react-icons/fa";
 
 const Chatbot = () => {
    const [messages, setMessages] = useState([]);
    const [userInput, setUserInput] = useState('');
    const [loading, setLoading] = useState(false);
+   const [input, setInput] = useState('');
+    const messagesEndRef = useRef(null);
 
-   const apiKey = '';
+   const apiKey = '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';
    const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
    const addMessage = (sender, message) => {
@@ -61,6 +63,14 @@ const Chatbot = () => {
       handleSendMessage();
    };
 
+   const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+      scrollToBottom();
+  }, [messages]);
+
    return (
       <div>
          <div className='chatDiv'>
@@ -71,6 +81,7 @@ const Chatbot = () => {
                   {msg.message}
                </div>
             ))}
+            <div ref={messagesEndRef} />
          </div>
          <div className='inputDiv'>
             <input 
